@@ -41,9 +41,26 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/active_circle.svg
+  SvgGenImage get activeCircle =>
+      const SvgGenImage('assets/icons/active_circle.svg');
+
+  /// File path: assets/icons/arrow_right.svg
+  SvgGenImage get arrowRight =>
+      const SvgGenImage('assets/icons/arrow_right.svg');
+
+  /// File path: assets/icons/calendar.svg
+  SvgGenImage get calendar => const SvgGenImage('assets/icons/calendar.svg');
+
   /// Directory path: assets/icons/nav_bar_icons
   $AssetsIconsNavBarIconsGen get navBarIcons =>
       const $AssetsIconsNavBarIconsGen();
+
+  /// File path: assets/icons/warning.svg
+  SvgGenImage get warning => const SvgGenImage('assets/icons/warning.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [activeCircle, arrowRight, calendar, warning];
 }
 
 class $AssetsImagesGen {

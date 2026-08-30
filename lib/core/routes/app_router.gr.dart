@@ -27,17 +27,17 @@ class AppRootRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [HomeRouterPage]
-class HomeRouter extends PageRouteInfo<void> {
-  const HomeRouter({List<PageRouteInfo>? children})
-    : super(HomeRouter.name, initialChildren: children);
+/// [DepositScreen]
+class DepositRoute extends PageRouteInfo<void> {
+  const DepositRoute({List<PageRouteInfo>? children})
+    : super(DepositRoute.name, initialChildren: children);
 
-  static const String name = 'HomeRouter';
+  static const String name = 'DepositRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const HomeRouterPage();
+      return const DepositScreen();
     },
   );
 }

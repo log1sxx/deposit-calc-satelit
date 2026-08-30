@@ -48,6 +48,8 @@ dependencies:
   webview_flutter: ^4.14.1
   cached_network_image: ^4.0.0
   appmetrica_plugin: ^4.1.0
+  syncfusion_flutter_core: ^34.2.5
+  syncfusion_flutter_sliders: ^34.2.5
 
 dev_dependencies:
   flutter_test:
