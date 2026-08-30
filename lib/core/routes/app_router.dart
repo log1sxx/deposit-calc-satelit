@@ -13,6 +13,9 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes {
-    return [AutoRoute(initial: true, path: '/', page: DepositRoute.page)];
+    return [
+      AutoRoute(initial: true, path: '/', page: HomeRoute.page),
+      AutoRoute(path: '/calculator', page: DepositRoute.page),
+    ];
   }
 }

@@ -45,33 +45,144 @@ class $AssetsIconsGen {
   SvgGenImage get activeCircle =>
       const SvgGenImage('assets/icons/active_circle.svg');
 
+  /// File path: assets/icons/add.svg
+  SvgGenImage get add => const SvgGenImage('assets/icons/add.svg');
+
+  /// File path: assets/icons/arrow_left_ios.svg
+  SvgGenImage get arrowLeftIos =>
+      const SvgGenImage('assets/icons/arrow_left_ios.svg');
+
   /// File path: assets/icons/arrow_right.svg
   SvgGenImage get arrowRight =>
       const SvgGenImage('assets/icons/arrow_right.svg');
 
+  /// File path: assets/icons/bin.svg
+  SvgGenImage get bin => const SvgGenImage('assets/icons/bin.svg');
+
+  /// File path: assets/icons/calculator.svg
+  SvgGenImage get calculator =>
+      const SvgGenImage('assets/icons/calculator.svg');
+
   /// File path: assets/icons/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/icons/calendar.svg');
+
+  /// File path: assets/icons/change_parametrs.svg
+  SvgGenImage get changeParametrs =>
+      const SvgGenImage('assets/icons/change_parametrs.svg');
+
+  /// File path: assets/icons/chart.svg
+  SvgGenImage get chart => const SvgGenImage('assets/icons/chart.svg');
+
+  /// File path: assets/icons/circle_locker.svg
+  SvgGenImage get circleLocker =>
+      const SvgGenImage('assets/icons/circle_locker.svg');
+
+  /// File path: assets/icons/close.svg
+  SvgGenImage get close => const SvgGenImage('assets/icons/close.svg');
+
+  /// File path: assets/icons/message.svg
+  SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
 
   /// Directory path: assets/icons/nav_bar_icons
   $AssetsIconsNavBarIconsGen get navBarIcons =>
       const $AssetsIconsNavBarIconsGen();
 
+  /// File path: assets/icons/procents.svg
+  SvgGenImage get procents => const SvgGenImage('assets/icons/procents.svg');
+
+  /// File path: assets/icons/protected_wallet.svg
+  SvgGenImage get protectedWallet =>
+      const SvgGenImage('assets/icons/protected_wallet.svg');
+
+  /// File path: assets/icons/wallet.svg
+  SvgGenImage get wallet => const SvgGenImage('assets/icons/wallet.svg');
+
   /// File path: assets/icons/warning.svg
   SvgGenImage get warning => const SvgGenImage('assets/icons/warning.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [activeCircle, arrowRight, calendar, warning];
+  List<SvgGenImage> get values => [
+    activeCircle,
+    add,
+    arrowLeftIos,
+    arrowRight,
+    bin,
+    calculator,
+    calendar,
+    changeParametrs,
+    chart,
+    circleLocker,
+    close,
+    message,
+    procents,
+    protectedWallet,
+    wallet,
+    warning,
+  ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/capitalization_main_background.png
+  AssetGenImage get capitalizationMainBackground =>
+      const AssetGenImage('assets/images/capitalization_main_background.png');
+
+  /// File path: assets/images/dosroch_close_main_background.png
+  AssetGenImage get dosrochCloseMainBackground =>
+      const AssetGenImage('assets/images/dosroch_close_main_background.png');
+
   /// File path: assets/images/edit_profile_image.png
   AssetGenImage get editProfileImage =>
       const AssetGenImage('assets/images/edit_profile_image.png');
 
+  /// File path: assets/images/folder.png
+  AssetGenImage get folder => const AssetGenImage('assets/images/folder.png');
+
+  /// File path: assets/images/how_to_work_capitalization.png
+  AssetGenImage get howToWorkCapitalization =>
+      const AssetGenImage('assets/images/how_to_work_capitalization.png');
+
+  /// File path: assets/images/how_to_work_inv_or_nakop_main_background.png
+  AssetGenImage get howToWorkInvOrNakopMainBackground => const AssetGenImage(
+    'assets/images/how_to_work_inv_or_nakop_main_background.png',
+  );
+
+  /// File path: assets/images/how_to_work_kluch_stav_link_main_background.png
+  AssetGenImage get howToWorkKluchStavLinkMainBackground => const AssetGenImage(
+    'assets/images/how_to_work_kluch_stav_link_main_background.png',
+  );
+
+  /// File path: assets/images/inv_or_nakop_main_background.png
+  AssetGenImage get invOrNakopMainBackground =>
+      const AssetGenImage('assets/images/inv_or_nakop_main_background.png');
+
+  /// File path: assets/images/kluch_stav_link_main_background.png
+  AssetGenImage get kluchStavLinkMainBackground =>
+      const AssetGenImage('assets/images/kluch_stav_link_main_background.png');
+
+  /// File path: assets/images/main_page_background.png
+  AssetGenImage get mainPageBackground =>
+      const AssetGenImage('assets/images/main_page_background.png');
+
+  /// File path: assets/images/srok_invs_main_background.png
+  AssetGenImage get srokInvsMainBackground =>
+      const AssetGenImage('assets/images/srok_invs_main_background.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [editProfileImage];
+  List<AssetGenImage> get values => [
+    capitalizationMainBackground,
+    dosrochCloseMainBackground,
+    editProfileImage,
+    folder,
+    howToWorkCapitalization,
+    howToWorkInvOrNakopMainBackground,
+    howToWorkKluchStavLinkMainBackground,
+    invOrNakopMainBackground,
+    kluchStavLinkMainBackground,
+    mainPageBackground,
+    srokInvsMainBackground,
+  ];
 }
 
 class $AssetsTranslationsGen {
@@ -98,6 +209,10 @@ class $AssetsIconsNavBarIconsGen {
   SvgGenImage get mapNavBarIcon =>
       const SvgGenImage('assets/icons/nav_bar_icons/map_nav_bar_icon.svg');
 
+  /// File path: assets/icons/nav_bar_icons/my_calculations.svg
+  SvgGenImage get myCalculations =>
+      const SvgGenImage('assets/icons/nav_bar_icons/my_calculations.svg');
+
   /// File path: assets/icons/nav_bar_icons/profile_nav_bar_icon.svg
   SvgGenImage get profileNavBarIcon =>
       const SvgGenImage('assets/icons/nav_bar_icons/profile_nav_bar_icon.svg');
@@ -106,6 +221,7 @@ class $AssetsIconsNavBarIconsGen {
   List<SvgGenImage> get values => [
     homeNavBarIcon,
     mapNavBarIcon,
+    myCalculations,
     profileNavBarIcon,
   ];
 }

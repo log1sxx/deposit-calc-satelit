@@ -1,215 +1,151 @@
-import 'package:deposit_calc_satelit/features/deposit_calculator/data/utils/formatters.dart';
-import 'package:deposit_calc_satelit/features/deposit_calculator/domain/models/deposit_payment.dart';
-import 'package:deposit_calc_satelit/features/deposit_calculator/domain/models/deposit_result.dart';
-import 'package:deposit_calc_satelit/features/deposit_calculator/presentation/styles/my_finances_colors.dart';
-import 'package:deposit_calc_satelit/features/deposit_calculator/presentation/widgets/app_header.dart';
+import 'package:deposit_calc_satelit/features/deposit_calculator/domain/deposit_calculation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 class DepositResultScreen extends StatelessWidget {
-  final DepositResult result;
-
   const DepositResultScreen(this.result, {super.key});
+  final DepositCalculationResult result;
+  static final money = NumberFormat.currency(
+    locale: 'ru',
+    symbol: '₽',
+    decimalDigits: 0,
+  );
+  static final month = DateFormat('MM.yyyy');
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppStyles.appBarBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            AppHeader(canPop: true, title: "Результат расчета"),
-            Expanded(
-              child: Container(
-                color: Colors.white,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _briefInfo(context),
-                      const SizedBox(height: 20),
-                      _payments(context),
-                      const SizedBox(height: 20),
-                      _warning(context),
-                      const SizedBox(height: 24),
-                    ],
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: const Color(0xFFF4F5FA),
+    appBar: AppBar(
+      title: const Text('Результат расчёта'),
+      backgroundColor: Colors.white,
+    ),
+    body: ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
+        summary(),
+        const SizedBox(height: 16),
+        const Text(
+          'График начислений',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 10),
+        card(
+          Column(
+            children: [
+              const Row(
+                children: [
+                  Expanded(
+                    child: Text('Период', style: TextStyle(color: Colors.grey)),
                   ),
+                  Expanded(
+                    child: Text(
+                      'Проценты',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Остаток',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
+              for (final row in result.schedule) ...[
+                Row(
+                  children: [
+                    Expanded(child: Text(month.format(row.date))),
+                    Expanded(
+                      child: Text(
+                        money.format(row.interest),
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        money.format(row.balance),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(height: 20),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: 14),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF8C5),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.info_outline),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Расчёт носит информационный характер. Условия банка, налоги и правила округления могут изменить итоговую сумму.',
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
 
-  Widget _briefInfo(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 20,
-            offset: Offset(0, 4),
+  Widget card(Widget child) => Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      boxShadow: const [BoxShadow(color: Color(0x14000000), blurRadius: 18)],
+    ),
+    child: child,
+  );
+  Widget summary() => card(
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          money.format(result.income),
+          style: const TextStyle(
+            color: Color(0xFF1717EF),
+            fontSize: 34,
+            fontWeight: FontWeight.w800,
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            currency(result.profit),
-            style: AppStyles.display.copyWith(color: AppStyles.secondary),
-          ),
-          Text(
-            "Составит ваш доход по вкладу",
-            style: AppStyles.body.copyWith(
-              color: Colors.black.withOpacity(0.6),
-            ),
-          ),
-          Divider(color: Colors.black.withOpacity(0.5), height: 32),
-          Text(
-            "Общая сумма выплат на конец срока:",
-            style: AppStyles.body.copyWith(
-              color: Colors.black.withOpacity(0.6),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            currency(result.total),
-            style: AppStyles.display.copyWith(fontSize: 20),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _payments(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Выплаты по вкладу",
-            style: AppStyles.display.copyWith(
-              fontSize: 24,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppStyles.light,
-            ),
-            padding: const EdgeInsets.all(16),
-            width: double.infinity,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Год:",
-                      style: AppStyles.body.copyWith(
-                        color: Colors.black.withOpacity(0.6),
-                        fontSize: 14,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Сумма начисленных %:",
-                        style: AppStyles.body.copyWith(
-                          color: Colors.black.withOpacity(0.6),
-                          fontSize: 14,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                ...result.payments.map(_payment),
-                Divider(color: Colors.black.withOpacity(0.2), thickness: 1),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    Text(
-                      "Итого:",
-                      style: AppStyles.h1.copyWith(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        currency(result.profit),
-                        style: AppStyles.h1.copyWith(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _payment(DepositPayment payment) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [
-          Text(
-            dateMY(payment.date),
-            style: AppStyles.body.copyWith(fontSize: 20),
-          ),
-          Expanded(
-            child: Text(
-              currency(payment.sum),
-              style: AppStyles.h1.copyWith(fontSize: 20, color: Colors.black),
-              textAlign: TextAlign.right,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _warning(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: AppStyles.beige,
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: const EdgeInsets.all(16),
-      width: double.infinity,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset('assets/icons/warning.svg', width: 24),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              "С дохода по вкладам, который вы получите начиная с 1 января 2023 года, может взиматься НДФЛ",
-              style: AppStyles.body.copyWith(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+        const Text(
+          'Доход по вкладу',
+          style: TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+        const Divider(height: 28),
+        row('Итоговая сумма', result.finalAmount),
+        if (result.totalRefills > 0)
+          row('Всего пополнений', result.totalRefills),
+        if (result.totalWithdrawals > 0)
+          row('Всего снятий', result.totalWithdrawals),
+      ],
+    ),
+  );
+  Widget row(String title, double value) => Padding(
+    padding: const EdgeInsets.only(top: 8),
+    child: Row(
+      children: [
+        Expanded(child: Text(title)),
+        Text(
+          money.format(value),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+      ],
+    ),
+  );
 }

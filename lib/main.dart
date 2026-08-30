@@ -39,9 +39,7 @@ void main() async {
         globalUserId,
       );
     }
-    runApp(
-      const App(),
-    );
+    runApp(const App());
   });
 }
 
