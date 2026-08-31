@@ -27,6 +27,38 @@ class AppRootRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CapitalizationArticleScreen]
+class CapitalizationArticleRoute extends PageRouteInfo<void> {
+  const CapitalizationArticleRoute({List<PageRouteInfo>? children})
+    : super(CapitalizationArticleRoute.name, initialChildren: children);
+
+  static const String name = 'CapitalizationArticleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CapitalizationArticleScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [DepositOrSavingsArticleScreen]
+class DepositOrSavingsArticleRoute extends PageRouteInfo<void> {
+  const DepositOrSavingsArticleRoute({List<PageRouteInfo>? children})
+    : super(DepositOrSavingsArticleRoute.name, initialChildren: children);
+
+  static const String name = 'DepositOrSavingsArticleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DepositOrSavingsArticleScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [DepositScreen]
 class DepositRoute extends PageRouteInfo<void> {
   const DepositRoute({List<PageRouteInfo>? children})
@@ -43,6 +75,38 @@ class DepositRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DepositTermArticleScreen]
+class DepositTermArticleRoute extends PageRouteInfo<void> {
+  const DepositTermArticleRoute({List<PageRouteInfo>? children})
+    : super(DepositTermArticleRoute.name, initialChildren: children);
+
+  static const String name = 'DepositTermArticleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DepositTermArticleScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [EarlyClosureArticleScreen]
+class EarlyClosureArticleRoute extends PageRouteInfo<void> {
+  const EarlyClosureArticleRoute({List<PageRouteInfo>? children})
+    : super(EarlyClosureArticleRoute.name, initialChildren: children);
+
+  static const String name = 'EarlyClosureArticleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const EarlyClosureArticleScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
@@ -54,6 +118,38 @@ class HomeRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const HomeScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [KeyRateArticleScreen]
+class KeyRateArticleRoute extends PageRouteInfo<void> {
+  const KeyRateArticleRoute({List<PageRouteInfo>? children})
+    : super(KeyRateArticleRoute.name, initialChildren: children);
+
+  static const String name = 'KeyRateArticleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const KeyRateArticleScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [MyCalculationsScreen]
+class MyCalculationsRoute extends PageRouteInfo<void> {
+  const MyCalculationsRoute({List<PageRouteInfo>? children})
+    : super(MyCalculationsRoute.name, initialChildren: children);
+
+  static const String name = 'MyCalculationsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const MyCalculationsScreen();
     },
   );
 }

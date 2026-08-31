@@ -9,6 +9,6 @@
 // ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 abstract final class FontFamily {
-  /// Font family: Montserrat
-  static const String montserrat = 'Montserrat';
+  /// Font family: SFProDisplay
+  static const String sFProDisplay = 'SFProDisplay';
 }

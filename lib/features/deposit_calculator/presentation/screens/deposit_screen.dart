@@ -1,4 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:deposit_calc_satelit/core/di/service_locator.dart';
+import 'package:deposit_calc_satelit/core/routes/app_router.dart';
+import 'package:deposit_calc_satelit/core/widgets/app_header.dart';
+import 'package:deposit_calc_satelit/features/deposit_calculator/data/saved_calculations.dart';
+import 'package:deposit_calc_satelit/features/deposit_calculator/data/utils/formatters.dart';
 import 'package:deposit_calc_satelit/features/deposit_calculator/domain/deposit_calculation.dart';
 import 'package:deposit_calc_satelit/features/deposit_calculator/presentation/screens/deposit_result_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +19,6 @@ class DepositScreen extends StatefulWidget {
 
 class _DepositScreenState extends State<DepositScreen> {
   static const violet = Color(0xFF6752F4),
-      navy = Color(0xFF062967),
       green = Color(0xFF2FC76E),
       background = Color(0xFFF3F4F8);
   final amount = TextEditingController(text: '100 000');
@@ -40,19 +44,9 @@ class _DepositScreenState extends State<DepositScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: background,
-    appBar: AppBar(
-      toolbarHeight: 70,
-      backgroundColor: navy,
-      foregroundColor: Colors.white,
-      leading: Padding(
-        padding: const EdgeInsets.all(10),
-        child: IconButton.filled(
-          style: IconButton.styleFrom(backgroundColor: const Color(0xFF123A7B)),
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.chevron_left),
-        ),
-      ),
-      title: const Text('Калькулятор', style: TextStyle(fontSize: 17)),
+    appBar: AppHeader(
+      title: 'Калькулятор',
+      onBack: () => Navigator.maybePop(context),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 12),
@@ -74,7 +68,7 @@ class _DepositScreenState extends State<DepositScreen> {
           'Параметры вклада',
           Column(
             children: [
-              number('Сумма вложений, ₽', amount),
+              number('Сумма вложений, ₽', amount, moneyField: true),
               gap,
               label('Срок вклада'),
               const SizedBox(height: 7),
@@ -214,14 +208,20 @@ class _DepositScreenState extends State<DepositScreen> {
                   BoxShadow(color: Color(0x14000000), blurRadius: 8),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(Icons.home_rounded, 'Главная', true),
+                  _NavItem(
+                    Icons.home_rounded,
+                    'Главная',
+                    true,
+                    () => context.router.replace(const HomeRoute()),
+                  ),
                   _NavItem(
                     Icons.format_list_bulleted_rounded,
                     'Мои расчёты',
                     false,
+                    () => context.router.replace(const MyCalculationsRoute()),
                   ),
                 ],
               ),
@@ -296,21 +296,28 @@ class _DepositScreenState extends State<DepositScreen> {
     String title,
     TextEditingController c, {
     bool decimal = false,
+    bool moneyField = false,
   }) => Column(
     children: [
       label(title),
       const SizedBox(height: 7),
-      input(c, decimal: decimal),
+      input(c, decimal: decimal, moneyField: moneyField),
     ],
   );
-  Widget input(TextEditingController c, {bool decimal = false}) => TextField(
+  Widget input(
+    TextEditingController c, {
+    bool decimal = false,
+    bool moneyField = false,
+  }) => TextField(
     controller: c,
     keyboardType: TextInputType.numberWithOptions(decimal: decimal),
-    inputFormatters: [
-      FilteringTextInputFormatter.allow(
-        RegExp(decimal ? r'[0-9,.\s]' : r'[0-9\s]'),
-      ),
-    ],
+    inputFormatters: moneyField
+        ? const [ThousandsSeparatorInputFormatter()]
+        : [
+            FilteringTextInputFormatter.allow(
+              RegExp(decimal ? r'[0-9,.\s]' : r'[0-9\s]'),
+            ),
+          ],
     decoration: decoration(),
   );
   InputDecoration decoration([String? title]) => InputDecoration(
@@ -355,33 +362,64 @@ class _DepositScreenState extends State<DepositScreen> {
     String title,
     DateTime value,
     ValueChanged<DateTime> changed,
-  ) => Column(
-    children: [
-      label(title),
-      const SizedBox(height: 7),
-      InkWell(
-        onTap: () async {
-          final v = await showDatePicker(
-            context: context,
-            initialDate: value.isBefore(start) ? start : value,
-            firstDate: start,
-            lastDate: DateTime(2100),
-          );
-          if (v != null) changed(v);
-        },
-        child: InputDecorator(
-          decoration: decoration(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(DateFormat('dd.MM.yyyy').format(value)),
-              const Icon(Icons.calendar_month, color: violet),
-            ],
+  ) {
+    final firstAllowedDate = title == 'Дата открытия вклада'
+        ? DateTime(2000)
+        : start;
+    final lastAllowedDate = DateTime(2100, 12, 31);
+    return Column(
+      children: [
+        label(title),
+        const SizedBox(height: 7),
+        TextFormField(
+          key: ValueKey('$title-${DateFormat('dd.MM.yyyy').format(value)}'),
+          initialValue: DateFormat('dd.MM.yyyy').format(value),
+          keyboardType: TextInputType.datetime,
+          inputFormatters: const [DateInputFormatter()],
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (text) => validateDateInput(
+            text,
+            firstDate: firstAllowedDate,
+            lastDate: lastAllowedDate,
+          ),
+          onChanged: (text) {
+            if (validateDateInput(
+                  text,
+                  firstDate: firstAllowedDate,
+                  lastDate: lastAllowedDate,
+                ) !=
+                null) {
+              return;
+            }
+            try {
+              final date = DateFormat('dd.MM.yyyy').parseStrict(text);
+              changed(date);
+            } on FormatException {
+              // Неполная или некорректная дата остаётся в поле для исправления.
+            }
+          },
+          decoration: decoration().copyWith(
+            hintText: 'ДД.ММ.ГГГГ',
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.calendar_month, color: violet),
+              onPressed: () async {
+                final v = await showDatePicker(
+                  context: context,
+                  initialDate: value.isBefore(firstAllowedDate)
+                      ? firstAllowedDate
+                      : value,
+                  firstDate: firstAllowedDate,
+                  lastDate: lastAllowedDate,
+                );
+                if (v != null) changed(v);
+              },
+            ),
           ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
+
   Widget dropdown<T>(
     String title,
     T value,
@@ -462,7 +500,7 @@ class _DepositScreenState extends State<DepositScreen> {
               (v) => setState(() => d.date = v),
             ),
             gap,
-            number('Сумма, ₽', d.amount),
+            number('Сумма, ₽', d.amount, moneyField: true),
             if (!withdrawal) ...[
               gap,
               const Align(
@@ -521,7 +559,7 @@ class _DepositScreenState extends State<DepositScreen> {
     });
   }
 
-  void calculate() {
+  Future<void> calculate() async {
     try {
       final t = numberValue(term).round();
       if (t <= 0) {
@@ -533,29 +571,41 @@ class _DepositScreenState extends State<DepositScreen> {
           'Досрочное закрытие должно быть раньше окончания вклада',
         );
       }
-      final result = const DepositCalculator().calculate(
-        DepositCalculationInput(
-          initialAmount: numberValue(amount),
-          annualRate: numberValue(rate),
-          startDate: start,
-          endDate: early ? earlyDate : contractualEnd,
-          capitalization: capitalization
-              ? capitalPeriod
-              : CapitalizationPeriod.none,
-          moveWeekendPayments: moveWeekends,
-          earlyClosingRate: early ? numberValue(earlyRate) : null,
-          refills: refills.map((e) => e.operation()).toList(),
-          withdrawals: withdrawals.map((e) => e.operation()).toList(),
+      final calculationInput = DepositCalculationInput(
+        initialAmount: numberValue(amount),
+        annualRate: numberValue(rate),
+        startDate: start,
+        endDate: early ? earlyDate : contractualEnd,
+        capitalization: capitalization
+            ? capitalPeriod
+            : CapitalizationPeriod.none,
+        moveWeekendPayments: moveWeekends,
+        earlyClosingRate: early ? numberValue(earlyRate) : null,
+        refills: refills.map((e) => e.operation()).toList(),
+        withdrawals: withdrawals.map((e) => e.operation()).toList(),
+      );
+      final result = const DepositCalculator().calculate(calculationInput);
+      await SavedCalculationsStorage(getIt()).save(
+        SavedCalculation(
+          savedAt: DateTime.now(),
+          input: calculationInput,
+          result: result,
         ),
       );
-      Navigator.push(
+      if (!mounted) return;
+      final shouldReset = await Navigator.push<bool>(
         context,
-        MaterialPageRoute(builder: (_) => DepositResultScreen(result)),
+        MaterialPageRoute(
+          builder: (_) => DepositResultScreen(result, calculationInput),
+        ),
       );
+      if (mounted && shouldReset == true) reset();
     } on FormatException catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
     } catch (_) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Проверьте заполнение полей')),
       );
@@ -589,23 +639,33 @@ class _Draft {
 }
 
 class _NavItem extends StatelessWidget {
-  const _NavItem(this.icon, this.title, this.selected);
+  const _NavItem(this.icon, this.title, this.selected, [this.onTap]);
   final IconData icon;
   final String title;
   final bool selected;
+  final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(icon, color: selected ? _DepositScreenState.violet : Colors.grey),
-      Text(
-        title,
-        style: TextStyle(
-          fontSize: 10,
-          color: selected ? Colors.black : Colors.grey,
-        ),
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: selected ? _DepositScreenState.violet : Colors.grey,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 10,
+              color: selected ? Colors.black : Colors.grey,
+            ),
+          ),
+        ],
       ),
-    ],
+    ),
   );
 }

@@ -87,16 +87,18 @@ flutter:
     - assets/fonts/
   generate: true
   fonts:
-    - family: Montserrat
+    - family: SFProDisplay
       fonts:
-        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/SF-Pro-Display-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Montserrat-Medium.ttf
+        - asset: assets/fonts/SF-Pro-Display-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/SF-Pro-Display-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Montserrat-Black.ttf
+        - asset: assets/fonts/SF-Pro-Display-Black.ttf
           weight: 900
+        - asset: assets/fonts/SF-Pro-Display-Italic.ttf
+          style: italic
 
 flutter_intl:
   enabled: true

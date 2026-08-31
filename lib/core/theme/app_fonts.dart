@@ -12,4 +12,19 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 18.sp,
   );
+
+  static const body16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.35,
+    color: Colors.black,
+  );
+
+  static const headerTitle = TextStyle(
+    fontFamily: 'Gilroy',
+    fontFamilyFallback: ['SFProDisplay'],
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
 }

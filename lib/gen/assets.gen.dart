@@ -17,24 +17,32 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/Montserrat-Black.ttf
-  String get montserratBlack => 'assets/fonts/Montserrat-Black.ttf';
+  /// File path: assets/fonts/Gilroy-BlackItalic.ttf
+  String get gilroyBlackItalic => 'assets/fonts/Gilroy-BlackItalic.ttf';
 
-  /// File path: assets/fonts/Montserrat-Bold.ttf
-  String get montserratBold => 'assets/fonts/Montserrat-Bold.ttf';
+  /// File path: assets/fonts/SF-Pro-Display-Black.ttf
+  String get sFProDisplayBlack => 'assets/fonts/SF-Pro-Display-Black.ttf';
 
-  /// File path: assets/fonts/Montserrat-Medium.ttf
-  String get montserratMedium => 'assets/fonts/Montserrat-Medium.ttf';
+  /// File path: assets/fonts/SF-Pro-Display-Bold.ttf
+  String get sFProDisplayBold => 'assets/fonts/SF-Pro-Display-Bold.ttf';
 
-  /// File path: assets/fonts/Montserrat-Regular.ttf
-  String get montserratRegular => 'assets/fonts/Montserrat-Regular.ttf';
+  /// File path: assets/fonts/SF-Pro-Display-Italic.ttf
+  String get sFProDisplayItalic => 'assets/fonts/SF-Pro-Display-Italic.ttf';
+
+  /// File path: assets/fonts/SF-Pro-Display-Medium.ttf
+  String get sFProDisplayMedium => 'assets/fonts/SF-Pro-Display-Medium.ttf';
+
+  /// File path: assets/fonts/SF-Pro-Display-Regular.ttf
+  String get sFProDisplayRegular => 'assets/fonts/SF-Pro-Display-Regular.ttf';
 
   /// List of all assets
   List<String> get values => [
-    montserratBlack,
-    montserratBold,
-    montserratMedium,
-    montserratRegular,
+    gilroyBlackItalic,
+    sFProDisplayBlack,
+    sFProDisplayBold,
+    sFProDisplayItalic,
+    sFProDisplayMedium,
+    sFProDisplayRegular,
   ];
 }
 

@@ -3,7 +3,7 @@ import 'package:deposit_calc_satelit/core/theme/app_colors.dart';
 
 final defaultTheme = ThemeData(
   appBarTheme: appBarTheme,
-  fontFamily: 'Montserrat',
+  fontFamily: 'SFProDisplay',
   inputDecorationTheme: inputDecorationTheme,
   bottomNavigationBarTheme: bottomNavBarTheme,
   buttonTheme: buttonThemeData,
